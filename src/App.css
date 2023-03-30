@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -23,56 +24,35 @@ body {
   overflow-y: auto;
 }
 
-.circular-button-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+}
+
+.button-row {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.circular-buttons {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
-
-.circular-buttons button {
+.local-regional-international {
   position: absolute;
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 14px;
-  outline: none;
-  background-color: #3f51b5;
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 16px;
+  left: 16px;
 }
 
-.circular-buttons button:nth-child(1) {
-  top: 0;
-  left: 25%;
+.login-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
-.circular-buttons button:nth-child(2) {
-  top: 25%;
-  right: 0;
+.new-used-both {
+  margin-right: 8px;
 }
 
-.circular-buttons button:nth-child(3) {
-  bottom: 0;
-  left: 25%;
-}
-
-.circular-buttons button:nth-child(4) {
-  top: 25%;
-  left: 0;
+.buy-sell {
+  margin-left: 8px;
 }

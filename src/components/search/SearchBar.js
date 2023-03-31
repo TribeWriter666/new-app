@@ -1,29 +1,48 @@
-import React from 'react';
-import { Paper, InputBase, IconButton } from '@mui/material';
-import { Search as SearchIcon } from '@mui/icons-material';
+import React from "react";
+import { Paper, InputBase, IconButton } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled } from "@mui/system";
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: "8px 16px",
+  display: "flex",
+  alignItems: "center",
+  borderRadius: "50px",
+  width: "75%",
+  maxWidth: "1000px",
+  [theme.breakpoints.down("sm")]: {
+    width: "80%",
+  },
+}));
+
+const StyledInputBase = styled(InputBase)({
+  marginLeft: "8px",
+  flex: 1,
+});
+
+const StyledIconButton = styled(IconButton)({
+  padding: "10px",
+});
 
 function SearchBar() {
+  const isMobile = useMediaQuery("(max-width:600px)");
+
   return (
-    <Paper
+    <StyledPaper
       component="form"
       sx={{
-        p: '8px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        borderRadius: '50px',
-        width: '100%',
-        maxWidth: '600px',
+        width: isMobile ? "100%" : "75%",
       }}
     >
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
+      <StyledInputBase
         placeholder="Search Products"
-        inputProps={{ 'aria-label': 'search products' }}
+        inputProps={{ "aria-label": "search products" }}
       />
-      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+      <StyledIconButton type="submit" aria-label="search">
         <SearchIcon />
-      </IconButton>
-    </Paper>
+      </StyledIconButton>
+    </StyledPaper>
   );
 }
 

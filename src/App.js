@@ -7,6 +7,7 @@ import {
   ToggleButton,
   CssBaseline,
   Button,
+  Grid,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -16,22 +17,11 @@ import SearchBar from "./components/search/SearchBar";
 import { useState } from "react";
 
 function App() {
-  const [typeState, setTypeState] = useState(null);
-  const [conditionState, setConditionState] = useState(null);
   const [purchaseState, setPurchaseState] = useState(null);
   const [locationState, setLocationState] = useState(null);
-  const [formatState, setFormatState] = useState(null);
-  const [physicalDigital, setPhysicalDigital] = useState("physical");
-  const [fixedAuction, setFixedAuction] = useState("fixed");
+  const [physicalDigital, setPhysicalDigital] = useState(null);
+  const [fixedAuction, setFixedAuction] = useState(null);
   const [newUsed, setNewUsed] = useState(null);
-
-  const handleTypeChange = (event, newValue) => {
-    setTypeState(newValue);
-  };
-
-  const handleConditionChange = (event, newValue) => {
-    setConditionState(newValue);
-  };
 
   const handlePurchaseChange = (event, newValue) => {
     setPurchaseState(newValue);
@@ -41,17 +31,7 @@ function App() {
     setLocationState(newValue);
   };
 
-  const handleFormatChange = (event, newValue) => {
-    setFormatState(newValue);
-  };
-
-  const isMobile = useMediaQuery("(max-width:600px)");
   const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
-
-  // Add sample product data
-  const products = [
-    // ... your product objects
-  ];
 
   const handleLoginDialogOpen = () => {
     setLoginDialogOpen(true);
@@ -67,99 +47,198 @@ function App() {
     },
   });
 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="sm">
-        <Box
+      <Container maxWidth="md">
+        <Grid
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             minHeight: "100vh",
+            maxHeight: "100vh",
+            overflow: "auto", // Add overflow property
             flexDirection: "column",
           }}
         >
-          <Box className="local-regional-international">
-            <ToggleButtonGroup
-              exclusive
-              value={locationState}
-              onChange={handleLocationChange}
-            >
-              <ToggleButton value="local">Local</ToggleButton>
-              <ToggleButton value="regional">Regional</ToggleButton>
-              <ToggleButton value="international">International</ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Box className="button-container">
-              <ToggleButtonGroup
-                className="fixed-price-auction"
-                exclusive
-                value={fixedAuction}
-                onChange={(e, val) => setFixedAuction(val)}
-              >
-                <ToggleButton value="fixed">Fixed Price</ToggleButton>
-                <ToggleButton value="auction">Auction</ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
-            <Box className="button-row">
-              <Box className="button-container new-used-both">
+          {isMobile ? (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Box className="button-container buy-sell">
+                  <ToggleButtonGroup
+                    exclusive
+                    value={purchaseState}
+                    onChange={handlePurchaseChange}
+                  >
+                    <ToggleButton value="buy">Buy</ToggleButton>
+                    <ToggleButton value="sell">Sell</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box className="button-container">
+                  <ToggleButtonGroup
+                    className="fixed-price-auction"
+                    value={fixedAuction}
+                    onChange={(e, val) => setFixedAuction(val)}
+                  >
+                    <ToggleButton value="fixed">Fixed Price</ToggleButton>
+                    <ToggleButton value="auction">Auction</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <SearchBar />
+              </Grid>
+              <Grid item xs={12}>
+                <Box className="button-container">
+                  <ToggleButtonGroup
+                    className="physical-digital"
+                    value={physicalDigital}
+                    onChange={(e, val) => {
+                      console.log("physicalDigital:", val);
+                      setPhysicalDigital(val);
+                    }}
+                  >
+                    <ToggleButton value="physical">Physical</ToggleButton>
+                    <ToggleButton value="digital">Digital</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box className="button-container new-used-both">
+                  <ToggleButtonGroup
+                    className="new-used"
+                    value={newUsed}
+                    onChange={(e, val) => setNewUsed(val)}
+                  >
+                    <ToggleButton value="new">New</ToggleButton>
+                    <ToggleButton value="used">Used</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box className="login-button" sx={{ textAlign: "center" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={handleLoginDialogOpen}
+                  >
+                    Login
+                  </Button>
+                  <UserAvatar onClick={handleLoginDialogOpen} />
+                  <LoginDialog
+                    open={loginDialogOpen}
+                    onClose={handleLoginDialogClose}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sx={{ position: "absolute", bottom: 16 }}>
+                <Box className="local-regional-international">
+                  <ToggleButtonGroup
+                    exclusive
+                    value={locationState}
+                    onChange={handleLocationChange}
+                  >
+                    <ToggleButton value="local">Local</ToggleButton>
+                    <ToggleButton value="regional">Regional</ToggleButton>
+                    <ToggleButton value="international">
+                      International
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Grid>
+            </Grid>
+          ) : (
+            <>
+              <Box className="local-regional-international">
                 <ToggleButtonGroup
-                  className="new-used"
-                  value={newUsed}
                   exclusive
-                  onChange={(e, val) => setNewUsed(val)}
+                  value={locationState}
+                  onChange={handleLocationChange}
                 >
-                  <ToggleButton value="new">New</ToggleButton>
-                  <ToggleButton value="used">Used</ToggleButton>
+                  <ToggleButton value="local">Local</ToggleButton>
+                  <ToggleButton value="regional">Regional</ToggleButton>
+                  <ToggleButton value="international">
+                    International
+                  </ToggleButton>
                 </ToggleButtonGroup>
               </Box>
-              <SearchBar />
-              <Box className="button-container buy-sell">
-                <ToggleButtonGroup
-                  exclusive
-                  value={purchaseState}
-                  onChange={handlePurchaseChange}
-                >
-                  <ToggleButton value="buy">Buy</ToggleButton>
-                  <ToggleButton value="sell">Sell</ToggleButton>
-                </ToggleButtonGroup>
-              </Box>
-            </Box>
-            <Box className="button-container">
-              <ToggleButtonGroup
-                className="physical-digital"
-                value={physicalDigital}
-                onChange={(e, val) => setPhysicalDigital(val)}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: "100%",
+                }}
               >
-                <ToggleButton value="physical">Physical</ToggleButton>
-                <ToggleButton value="digital">Digital</ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
-          </Box>
-          <Box className="login-button">
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleLoginDialogOpen}
-            >
-              Login
-            </Button>
-            <UserAvatar onClick={handleLoginDialogOpen} />
-            <LoginDialog
-              open={loginDialogOpen}
-              onClose={handleLoginDialogClose}
-            />
-          </Box>
-        </Box>
+                <Box className="button-container">
+                  <ToggleButtonGroup
+                    className="fixed-price-auction"
+                    value={fixedAuction}
+                    onChange={(e, val) => setFixedAuction(val)}
+                  >
+                    <ToggleButton value="fixed">Fixed Price</ToggleButton>
+                    <ToggleButton value="auction">Auction</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+                <Box className="button-row">
+                  <Box className="button-container new-used-both">
+                    <ToggleButtonGroup
+                      className="new-used"
+                      value={newUsed}
+                      onChange={(e, val) => setNewUsed(val)}
+                    >
+                      <ToggleButton value="new">New</ToggleButton>
+                      <ToggleButton value="used">Used</ToggleButton>
+                    </ToggleButtonGroup>
+                  </Box>
+                  <SearchBar />
+                  <Box className="button-container buy-sell">
+                    <ToggleButtonGroup
+                      exclusive
+                      value={purchaseState}
+                      onChange={handlePurchaseChange}
+                    >
+                      <ToggleButton value="buy">Buy</ToggleButton>
+                      <ToggleButton value="sell">Sell</ToggleButton>
+                    </ToggleButtonGroup>
+                  </Box>
+                </Box>
+                <Box className="button-container">
+                  <ToggleButtonGroup
+                    className="physical-digital"
+                    value={physicalDigital}
+                    onChange={(e, val) => {
+                      console.log("physicalDigital:", val);
+                      setPhysicalDigital(val);
+                    }}
+                  >
+                    <ToggleButton value="physical">Physical</ToggleButton>
+                    <ToggleButton value="digital">Digital</ToggleButton>
+                  </ToggleButtonGroup>
+                </Box>
+              </Box>
+              <Box className="login-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleLoginDialogOpen}
+                >
+                  Login
+                </Button>
+                <UserAvatar onClick={handleLoginDialogOpen} />
+                <LoginDialog
+                  open={loginDialogOpen}
+                  onClose={handleLoginDialogClose}
+                />
+              </Box>
+            </>
+          )}
+        </Grid>
       </Container>
     </ThemeProvider>
   );

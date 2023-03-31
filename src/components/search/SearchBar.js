@@ -12,7 +12,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   width: "75%",
   maxWidth: "1000px",
   [theme.breakpoints.down("sm")]: {
-    width: "80%",
+    width: "100%",
   },
 }));
 

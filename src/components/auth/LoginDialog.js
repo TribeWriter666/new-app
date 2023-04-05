@@ -41,7 +41,7 @@ function LoginDialog(props) {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>Login</DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ minHeight: "200px" }}>
         <TextField
           label="Email"
           fullWidth

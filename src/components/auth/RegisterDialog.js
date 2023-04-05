@@ -16,7 +16,7 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
   const checkUsernameAvailability = async (username) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/check-username-availability?username=${username}`
+        `http://localhost:3001/check-username-availability/${username}`
       );
       setUsernameAvailable(response.data.available);
     } catch (error) {
@@ -53,7 +53,7 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Register</DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ minHeight: "220px" }}>
         <TextField
           autoFocus
           margin="dense"
@@ -77,6 +77,14 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
             setErrorMessage("");
           }}
         />
+
+        {usernameAvailable !== null && (
+          <p style={{ color: usernameAvailable ? "green" : "red" }}>
+            {usernameAvailable
+              ? "Username available"
+              : "Username already taken"}
+          </p>
+        )}
 
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </DialogContent>

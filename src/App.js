@@ -131,21 +131,41 @@ function App() {
                   </ToggleButtonGroup>
                 </Box>
               </Grid>
-              <Grid item xs={12}>
-                <Box className="login-button" sx={{ textAlign: "center" }}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={handleLoginDialogOpen}
-                  >
-                    Login
-                  </Button>
-                  <UserAvatar onClick={handleLoginDialogOpen} />
-                  <LoginDialog
-                    open={loginDialogOpen}
-                    onClose={handleLoginDialogClose}
-                  />
-                </Box>
+              <Grid
+                item
+                xs={12}
+                sx={{ position: "absolute", top: 8, right: 16 }}
+              >
+                {!auth ? (
+                  <>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleLoginDialogOpen}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleRegisterDialogOpen}
+                    >
+                      Register
+                    </Button>
+                  </>
+                ) : (
+                  <UserAvatar auth={auth} setAuth={setAuth} />
+                )}
+                <LoginDialog
+                  open={loginDialogOpen}
+                  onClose={handleLoginDialogClose}
+                  setAuth={setAuth}
+                />
+                <RegisterDialog
+                  open={registerDialogOpen}
+                  onClose={handleRegisterDialogClose}
+                  setAuth={setAuth}
+                />
               </Grid>
               <Grid item xs={12} sx={{ position: "absolute", bottom: 16 }}>
                 <Box className="local-regional-international">

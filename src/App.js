@@ -15,6 +15,8 @@ import UserAvatar from "./components/auth/UserAvatar";
 import LoginDialog from "./components/auth/LoginDialog";
 import SearchBar from "./components/search/SearchBar";
 import { useState } from "react";
+import RegisterDialog from "./components/auth/RegisterDialog";
+import { useEffect } from "react";
 
 function App() {
   const [purchaseState, setPurchaseState] = useState(null);
@@ -22,16 +24,9 @@ function App() {
   const [physicalDigital, setPhysicalDigital] = useState(null);
   const [fixedAuction, setFixedAuction] = useState(null);
   const [newUsed, setNewUsed] = useState(null);
-
-  const handlePurchaseChange = (event, newValue) => {
-    setPurchaseState(newValue);
-  };
-
-  const handleLocationChange = (event, newValue) => {
-    setLocationState(newValue);
-  };
-
+  const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
+  const [auth, setAuth] = useState(null);
 
   const handleLoginDialogOpen = () => {
     setLoginDialogOpen(true);
@@ -39,6 +34,22 @@ function App() {
 
   const handleLoginDialogClose = () => {
     setLoginDialogOpen(false);
+  };
+
+  const handleRegisterDialogOpen = () => {
+    setRegisterDialogOpen(true);
+  };
+
+  const handleRegisterDialogClose = () => {
+    setRegisterDialogOpen(false);
+  };
+
+  const handlePurchaseChange = (event, newValue) => {
+    setPurchaseState(newValue);
+  };
+
+  const handleLocationChange = (event, newValue) => {
+    setLocationState(newValue);
   };
 
   const theme = createTheme({
@@ -222,18 +233,42 @@ function App() {
                   </ToggleButtonGroup>
                 </Box>
               </Box>
-              <Box className="login-button">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleLoginDialogOpen}
-                >
-                  Login
-                </Button>
-                <UserAvatar onClick={handleLoginDialogOpen} />
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 16,
+                }}
+              >
+                {!auth ? (
+                  <>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleLoginDialogOpen}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleRegisterDialogOpen}
+                    >
+                      Register
+                    </Button>
+                  </>
+                ) : (
+                  <UserAvatar auth={auth} setAuth={setAuth} />
+                )}
                 <LoginDialog
                   open={loginDialogOpen}
                   onClose={handleLoginDialogClose}
+                  setAuth={setAuth}
+                />
+                <RegisterDialog
+                  open={registerDialogOpen}
+                  onClose={handleRegisterDialogClose}
+                  setAuth={setAuth}
                 />
               </Box>
             </>

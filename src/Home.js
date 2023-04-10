@@ -17,7 +17,7 @@ import LoginDialog from "./components/auth/LoginDialog";
 import RegisterDialog from "./components/auth/RegisterDialog";
 import { useNavigate } from "react-router-dom";
 
-function HomePage() {
+function HomePage({ darkMode, setDarkMode }) {
   const [purchaseState, setPurchaseState] = useState(null);
   const [locationState, setLocationState] = useState(null);
   const [physicalDigital, setPhysicalDigital] = useState(null);
@@ -58,10 +58,18 @@ function HomePage() {
 
   const theme = createTheme({
     palette: {
-      mode: "dark",
+      mode: darkMode ? "dark" : "light",
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            backgroundColor: "var(--bg-color)",
+          },
+        },
+      },
     },
   });
-
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
@@ -162,7 +170,12 @@ function HomePage() {
                     </Button>
                   </>
                 ) : (
-                  <UserAvatar auth={auth} setAuth={setAuth} />
+                  <UserAvatar
+                    darkMode={darkMode}
+                    setDarkMode={setDarkMode}
+                    auth={auth}
+                    setAuth={setAuth}
+                  />
                 )}
                 <LoginDialog
                   open={loginDialogOpen}
@@ -291,7 +304,12 @@ function HomePage() {
                     </Button>
                   </>
                 ) : (
-                  <UserAvatar auth={auth} setAuth={setAuth} />
+                  <UserAvatar
+                    darkMode={darkMode}
+                    setDarkMode={setDarkMode}
+                    auth={auth}
+                    setAuth={setAuth}
+                  />
                 )}
                 <LoginDialog
                   open={loginDialogOpen}

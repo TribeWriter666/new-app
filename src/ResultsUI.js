@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Box, AppBar, Toolbar, Typography } from "@mui/material";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, useTheme } from "@mui/material";
 import SearchBar from "./components/search/SearchBar";
 import ProductList from "./components/products/ProductList";
 import UserAvatar from "./components/auth/UserAvatar";
 import { useParams } from "react-router-dom";
 
-function ProductUI({ searchQuery }) {
+function ProductUI({ searchQuery, darkMode, setDarkMode }) {
   const [products] = useState([]);
   const [view, setView] = useState("smallGrid");
   const { query } = useParams();
+  const theme = useTheme();
 
   // Rest of the App component
 
@@ -31,7 +32,13 @@ function ProductUI({ searchQuery }) {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.default,
+        minHeight: "100vh",
+        width: "100%",
+      }}
+    >
       <AppBar position="static">
         <Toolbar>
           <SearchBar onSubmit={handleSearchSubmit} />
@@ -52,7 +59,7 @@ function ProductUI({ searchQuery }) {
               {/* Add list view icon here */}
             </ToggleButton>
           </ToggleButtonGroup>
-          <UserAvatar />
+          <UserAvatar darkMode={darkMode} setDarkMode={setDarkMode} />
         </Toolbar>
       </AppBar>
       <Box mt={2}>

@@ -35,7 +35,6 @@ function UserAvatar({ auth, setAuth }) {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        getContentAnchorEl={null}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>Watchlist</MenuItem>

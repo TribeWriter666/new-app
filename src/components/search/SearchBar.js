@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Paper, InputBase, IconButton } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -25,17 +25,31 @@ const StyledIconButton = styled(IconButton)({
   padding: "10px",
 });
 
-function SearchBar() {
+function SearchBar({ onSubmit }) {
+  const [searchInput, setSearchInput] = useState("");
   const isMobile = useMediaQuery("(max-width:600px)");
+
+  const handleSubmit = (e) => {
+    //   e.preventDefault();
+    console.log(e);
+    onSubmit(searchInput);
+  };
+
+  const handleChange = (e) => {
+    setSearchInput(e.target.value);
+  };
 
   return (
     <StyledPaper
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         width: isMobile ? "100%" : "75%",
       }}
     >
       <StyledInputBase
+        value={searchInput}
+        onChange={handleChange}
         placeholder="Search Products"
         inputProps={{ "aria-label": "search products" }}
       />

@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./Home";
 import ResultsUI from "./ResultsUI";
-import { CssBaseline } from "@mui/material";
+import CreateListing from "./components/listings/CreateListings";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -47,6 +47,7 @@ function App() {
                 <ResultsUI darkMode={darkMode} setDarkMode={setDarkMode} />
               }
             />
+            <Route path="/create-listing" element={<CreateListing />} />
           </Routes>
         </Container>
       </Router>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { Link } from "react-router-dom";
 
 function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,6 +42,9 @@ function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
         <MenuItem onClick={handleClose}>Purchased</MenuItem>
         <MenuItem onClick={handleClose}>Listings</MenuItem>
         <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem component={Link} to="/create-listing" onClick={handleClose}>
+          Create Listing
+        </MenuItem>
         <MenuItem onClick={handleDarkModeToggle}>
           {darkMode ? <Brightness7Icon /> : <NightsStayIcon />} Night Mode
         </MenuItem>

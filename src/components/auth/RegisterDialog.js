@@ -65,6 +65,11 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
             setUsernameAvailable(null);
             setErrorMessage("");
           }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              register(usernameInput, passwordInput);
+            }
+          }}
         />
         <TextField
           margin="dense"
@@ -76,8 +81,12 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
             setPasswordInput(e.target.value);
             setErrorMessage("");
           }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              register(usernameInput, passwordInput);
+            }
+          }}
         />
-
         {usernameAvailable !== null && (
           <p style={{ color: usernameAvailable ? "green" : "red" }}>
             {usernameAvailable

@@ -50,6 +50,11 @@ function LoginDialog(props) {
             setUsernameInput(e.target.value);
             setErrorMessage("");
           }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              login(usernameInput, passwordInput);
+            }
+          }}
         />
         <TextField
           label="Password"
@@ -61,6 +66,11 @@ function LoginDialog(props) {
             setErrorMessage("");
           }}
           onKeyDown={handleKeyDown}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              login(usernameInput, passwordInput);
+            }
+          }}
         />
         {capsLockWarning && (
           <p style={{ color: "orange" }}>Warning: Caps lock is on</p>

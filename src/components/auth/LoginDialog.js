@@ -7,7 +7,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import supabase from "./supabase";
+import supabase from "../../supabaseClient";
 
 function LoginDialog(props) {
   const [usernameInput, setUsernameInput] = useState("");

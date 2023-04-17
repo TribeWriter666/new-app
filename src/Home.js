@@ -16,7 +16,7 @@ import UserAvatar from "./components/auth/UserAvatar";
 import LoginDialog from "./components/auth/LoginDialog";
 import RegisterDialog from "./components/auth/RegisterDialog";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@supabase/ui";
+import supabase from "./supabaseClient";
 
 function HomePage({ darkMode, setDarkMode, auth, setAuth }) {
   const [purchaseState, setPurchaseState] = useState(null);
@@ -27,7 +27,7 @@ function HomePage({ darkMode, setDarkMode, auth, setAuth }) {
   const navigate = useNavigate();
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
-  const { user } = useUser();
+  const user = supabase.auth.user;
 
   const handlePurchaseChange = (event, newValue) => {
     setPurchaseState(newValue);

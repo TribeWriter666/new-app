@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import supabase from "./supabase";
+import supabase from "../../supabaseClient";
 
 const RegisterDialog = ({ open, onClose, setAuth }) => {
   const [usernameInput, setUsernameInput] = useState("");

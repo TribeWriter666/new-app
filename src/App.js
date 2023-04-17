@@ -7,13 +7,13 @@ import HomePage from "./Home";
 import ResultsUI from "./ResultsUI";
 import CreateListing from "./components/listings/CreateListings";
 import UserDashboard from "./components/user/UserDashboard";
-import supabase from "./supabase";
+import supabase from "./supabaseClient";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [auth, setAuth] = useState(() => {
-    const user = supabase.auth.user();
+    const user = supabase.auth.user;
     return user ? { user } : null;
   });
 
@@ -46,6 +46,20 @@ function App() {
     }
   }, [auth]);
 
+  // Add useEffect for handling auth state change
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        const user = session ? { user: session.user } : null;
+        setAuth(user);
+      }
+    );
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -69,9 +83,13 @@ function App() {
               }
             />
             <Route path="/create-listing" element={<CreateListing />} />
-            <ProtectedRoute
+            <Route
               path="/user-dashboard"
-              element={<UserDashboard auth={auth} />}
+              element={
+                <ProtectedRoute>
+                  <UserDashboard auth={auth} />
+                </ProtectedRoute>
+              }
             />
           </Routes>
         </Container>

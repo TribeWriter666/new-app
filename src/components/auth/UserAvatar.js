@@ -3,7 +3,7 @@ import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Link } from "react-router-dom";
-import supabase from "./supabase";
+import supabase from "../../supabaseClient";
 
 function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
   const [anchorEl, setAnchorEl] = useState(null);

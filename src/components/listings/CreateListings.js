@@ -10,7 +10,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import supabase from "./supabase";
+import supabase from "../../supabaseClient";
 
 function CreateListing() {
   const [title, setTitle] = useState("");

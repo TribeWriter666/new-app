@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -8,6 +7,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import supabase from "./supabase";
 
 function LoginDialog(props) {
   const [usernameInput, setUsernameInput] = useState("");
@@ -15,18 +15,22 @@ function LoginDialog(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [capsLockWarning, setCapsLockWarning] = useState(false);
 
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:3001/login", {
-        username,
+      const { user, error } = await supabase.auth.signIn({
+        email,
         password,
       });
-      console.log(response.data);
-      props.setAuth(response.data); // Update auth state
+
+      if (error) {
+        throw error;
+      }
+
+      props.setAuth({ user });
       props.onClose();
     } catch (error) {
-      console.error("Error logging in:", error.response.data.message);
-      setErrorMessage(error.response.data.message);
+      console.error("Error logging in:", error.message);
+      setErrorMessage(error.message);
     }
   };
 

@@ -6,9 +6,16 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./Home";
 import ResultsUI from "./ResultsUI";
 import CreateListing from "./components/listings/CreateListings";
+import UserDashboard from "./components/user/UserDashboard";
+import supabase from "./supabase";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
+  const [auth, setAuth] = useState(() => {
+    const user = supabase.auth.user();
+    return user ? { user } : null;
+  });
 
   const theme = createTheme({
     palette: {
@@ -30,6 +37,15 @@ function App() {
     }
   }, [darkMode, theme]);
 
+  // Update this useEffect to save the auth state to localStorage
+  useEffect(() => {
+    if (auth) {
+      localStorage.setItem("auth", JSON.stringify(auth));
+    } else {
+      localStorage.removeItem("auth");
+    }
+  }, [auth]);
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -38,7 +54,12 @@ function App() {
             <Route
               path="/"
               element={
-                <HomePage darkMode={darkMode} setDarkMode={setDarkMode} />
+                <HomePage
+                  darkMode={darkMode}
+                  setDarkMode={setDarkMode}
+                  auth={auth}
+                  setAuth={setAuth}
+                />
               }
             />
             <Route
@@ -48,6 +69,10 @@ function App() {
               }
             />
             <Route path="/create-listing" element={<CreateListing />} />
+            <ProtectedRoute
+              path="/user-dashboard"
+              element={<UserDashboard auth={auth} />}
+            />
           </Routes>
         </Container>
       </Router>

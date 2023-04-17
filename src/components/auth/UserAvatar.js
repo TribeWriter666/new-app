@@ -3,6 +3,7 @@ import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Link } from "react-router-dom";
+import supabase from "./supabase";
 
 function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,7 +16,8 @@ function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setAuth(null);
     handleClose();
   };
@@ -39,8 +41,20 @@ function UserAvatar({ darkMode, setDarkMode, auth, setAuth }) {
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>Watchlist</MenuItem>
         <MenuItem onClick={handleClose}>Bids</MenuItem>
-        <MenuItem onClick={handleClose}>Purchased</MenuItem>
-        <MenuItem onClick={handleClose}>Listings</MenuItem>
+        <MenuItem
+          component={Link}
+          to={auth ? "/user-dashboard" : "/"}
+          onClick={handleClose}
+        >
+          Purchased
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          to={auth ? "/user-dashboard" : "/"}
+          onClick={handleClose}
+        >
+          Listings
+        </MenuItem>
         <MenuItem onClick={handleClose}>Settings</MenuItem>
         <MenuItem component={Link} to="/create-listing" onClick={handleClose}>
           Create Listing

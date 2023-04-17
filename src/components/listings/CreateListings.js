@@ -10,6 +10,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import supabase from "./supabase";
 
 function CreateListing() {
   const [title, setTitle] = useState("");
@@ -19,8 +20,27 @@ function CreateListing() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission and interact with the server to create a new listing
-    // For example, you could call your API endpoint here to create a new listing
+
+    // Interact with the server to create a new listing
+    const { data, error } = await supabase.from("listings").insert([
+      {
+        title,
+        description,
+        price,
+        category,
+      },
+    ]);
+
+    if (error) {
+      console.error("Error creating listing:", error.message);
+    } else {
+      console.log("Listing created:", data);
+      // Clear form fields after submission
+      setTitle("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+    }
   };
 
   return (

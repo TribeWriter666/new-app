@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import ProductCard from "../products/ProductCard";
-import supabase from "../supabase";
+import supabase from "../../supabaseClient";
 
 function UserDashboard({ auth }) {
   const [listings, setListings] = useState([]);

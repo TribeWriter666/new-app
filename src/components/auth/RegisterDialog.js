@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
+import supabase from "./supabase";
 
 const RegisterDialog = ({ open, onClose, setAuth }) => {
   const [usernameInput, setUsernameInput] = useState("");
@@ -15,15 +15,19 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
 
   const checkUsernameAvailability = async (username) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/check-username-availability/${username}`
-      );
-      setUsernameAvailable(response.data.available);
+      const { data, error } = await supabase
+        .from("users")
+        .select("username")
+        .eq("username", username)
+        .single();
+
+      if (error && !error.message.includes("No rows")) {
+        throw error;
+      }
+
+      setUsernameAvailable(!data);
     } catch (error) {
-      console.error(
-        "Error checking username availability:",
-        error.response.data.message
-      );
+      console.error("Error checking username availability:", error.message);
     }
   };
 
@@ -35,18 +39,22 @@ const RegisterDialog = ({ open, onClose, setAuth }) => {
     }
   }, [usernameInput]);
 
-  const register = async (username, password) => {
+  const register = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:3001/register", {
-        username,
+      const { user, error } = await supabase.auth.signUp({
+        email,
         password,
       });
-      console.log(response.data);
-      setAuth(response.data);
+
+      if (error) {
+        throw error;
+      }
+
+      setAuth({ user });
       onClose();
     } catch (error) {
-      console.error("Error registering:", error.response.data.message);
-      setErrorMessage(error.response.data.message);
+      console.error("Error registering:", error.message);
+      setErrorMessage(error.message);
     }
   };
 

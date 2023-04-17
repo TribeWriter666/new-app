@@ -16,8 +16,9 @@ import UserAvatar from "./components/auth/UserAvatar";
 import LoginDialog from "./components/auth/LoginDialog";
 import RegisterDialog from "./components/auth/RegisterDialog";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@supabase/ui";
 
-function HomePage({ darkMode, setDarkMode }) {
+function HomePage({ darkMode, setDarkMode, auth, setAuth }) {
   const [purchaseState, setPurchaseState] = useState(null);
   const [locationState, setLocationState] = useState(null);
   const [physicalDigital, setPhysicalDigital] = useState(null);
@@ -26,7 +27,7 @@ function HomePage({ darkMode, setDarkMode }) {
   const navigate = useNavigate();
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
-  const [auth, setAuth] = useState(null);
+  const { user } = useUser();
 
   const handlePurchaseChange = (event, newValue) => {
     setPurchaseState(newValue);
@@ -40,16 +41,8 @@ function HomePage({ darkMode, setDarkMode }) {
     setLoginDialogOpen(true);
   };
 
-  const handleLoginDialogClose = () => {
-    setLoginDialogOpen(false);
-  };
-
   const handleRegisterDialogOpen = () => {
     setRegisterDialogOpen(true);
-  };
-
-  const handleRegisterDialogClose = () => {
-    setRegisterDialogOpen(false);
   };
 
   const handleSearchSubmit = (query) => {
@@ -152,7 +145,7 @@ function HomePage({ darkMode, setDarkMode }) {
                 xs={12}
                 sx={{ position: "absolute", top: 8, right: 16 }}
               >
-                {!auth ? (
+                {!user ? (
                   <>
                     <Button
                       variant="outlined"
@@ -173,19 +166,17 @@ function HomePage({ darkMode, setDarkMode }) {
                   <UserAvatar
                     darkMode={darkMode}
                     setDarkMode={setDarkMode}
-                    auth={auth}
-                    setAuth={setAuth}
+                    user={user}
                   />
                 )}
                 <LoginDialog
                   open={loginDialogOpen}
-                  onClose={handleLoginDialogClose}
-                  setAuth={setAuth}
+                  onClose={() => setLoginDialogOpen(false)}
                 />
+
                 <RegisterDialog
                   open={registerDialogOpen}
-                  onClose={handleRegisterDialogClose}
-                  setAuth={setAuth}
+                  onClose={() => setRegisterDialogOpen(false)}
                 />
               </Grid>
               <Grid item xs={12} sx={{ position: "absolute", bottom: 16 }}>
@@ -286,7 +277,7 @@ function HomePage({ darkMode, setDarkMode }) {
                   right: 16,
                 }}
               >
-                {!auth ? (
+                {!user ? (
                   <>
                     <Button
                       variant="outlined"
@@ -307,19 +298,17 @@ function HomePage({ darkMode, setDarkMode }) {
                   <UserAvatar
                     darkMode={darkMode}
                     setDarkMode={setDarkMode}
-                    auth={auth}
-                    setAuth={setAuth}
+                    user={user}
                   />
                 )}
                 <LoginDialog
                   open={loginDialogOpen}
-                  onClose={handleLoginDialogClose}
-                  setAuth={setAuth}
+                  onClose={() => setLoginDialogOpen(false)}
                 />
+
                 <RegisterDialog
                   open={registerDialogOpen}
-                  onClose={handleRegisterDialogClose}
-                  setAuth={setAuth}
+                  onClose={() => setRegisterDialogOpen(false)}
                 />
               </Box>
             </>

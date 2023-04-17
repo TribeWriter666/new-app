@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import ProductCard from "../products/ProductCard";
-import axios from "axios";
+import supabase from "../supabase";
 
 function UserDashboard({ auth }) {
   const [listings, setListings] = useState([]);
@@ -10,18 +10,26 @@ function UserDashboard({ auth }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const listingsResponse = await axios.get(
-          `http://localhost:3001/listings/${auth.userId}`
-        );
-        const purchasesResponse = await axios.get(
-          `http://localhost:3001/purchases/${auth.userId}`
-        );
-        setListings(listingsResponse.data);
-        setPurchases(purchasesResponse.data);
+        const { data: listingsData, error: listingsError } = await supabase
+          .from("listings")
+          .select("*")
+          .eq("user_id", auth.id);
+
+        const { data: purchasesData, error: purchasesError } = await supabase
+          .from("purchases")
+          .select("*")
+          .eq("user_id", auth.id);
+
+        if (listingsError) throw listingsError;
+        if (purchasesError) throw purchasesError;
+
+        setListings(listingsData);
+        setPurchases(purchasesData);
       } catch (error) {
-        console.error("Error fetching data:", error.response.data.message);
+        console.error("Error fetching data:", error.message);
       }
     }
+
     if (auth) {
       fetchData();
     }
